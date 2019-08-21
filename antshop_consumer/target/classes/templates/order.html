@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>码蚁商城结算</title>
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}" href="./layui/css/layui.css">
+    <link rel="stylesheet" th:href="@{/style/common.css}" href="style/common.css">
+    <link rel="stylesheet" th:href="@{/style/regStyle.css}" href="style/regStyle.css">
+    <link rel="stylesheet" th:href="@{/style/footerStyle.css}" href="style/footerStyle.css">
+    <script th:src="@{/js/jquery-1.11.0.js}" src="js/jquery-1.11.0.js"></script>
+    <script th:src="@{/layui/layui.js}" src="layui/layui.js" charset="utf-8"></script>
+    <script th:src="@{/js/header.js}" src="js/header.js"></script>
+</head>
+<body>
+<div id="reg_header">
+    <div class="reg_h_center">
+
+        <img th:src="@{/images/logo.png}" src="images/logo.png" alt="">
+        <h3>我的订单</h3>
+
+        <div class="reg_h_right">
+            <span>继续购物</span><a th:href="@{/index}" href="index.jsp">返回首页</a>
+        </div>
+    </div>
+</div>
+<div th:each="order : ${orders}" class="layui-form" style="width: 1200px;margin:0 auto">
+    <table class="layui-table" lay-skin="line">
+        <colgroup>
+            <col width="150">
+            <col width="350">
+            <col width="150">
+            <col width="200">
+            <col width="150">
+            <col>
+        </colgroup>
+        <thead>
+        <tr>
+            <th><input type="checkbox" name="like1[write]  selectAll" lay-skin="primary" th:text="${order.ordertime}"></th>
+            <th th:text="订单号+${order.uuid}">${order.uuid}</th>
+            <th>电脑办公</th>
+            <th>和我联系</th>
+            <th>总计</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tr th:each="orderItem,iterStat : ${order.orderItems}">
+            <th><img th:src="@{/upload/image/}+${orderItem.product.image}" src="/upload/image/${orderItem.product.image}" alt="" width="50px" height="50px"></th>
+            <th>
+                <div>
+                    <a href="#" class="layui-a layui-a-normal" th:text="${orderItem.product.name}"></a>
+                </div>
+            </th>
+            <th>
+                <span><del th:text="￥+${orderItem.product.marketprice}"></del></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<div th:text="${orderItem.count}"></div><br>
+                <span style="color: red" th:text="￥+${orderItem.product.shopprice}">￥${orderItem.product.shopPrice}</span>
+            </th>
+            <th><a href="">投诉店家</a><br><a href="">退运费险</a></th>
+            <div th:if="${iterStat.index==0}">
+                <th rowspan="${fn:length(order.orderItems)+1}"><span th:text="${order.totalPrice}"></span></th>
+                <th rowspan="${fn:length(order.orderItems)+1}">
+                        <span>
+                            <a th:href="@{/order/updatePayState}+'?orderId='+${order.uuid}" href="/order/updatePayState&orderId=${order.uuid}">
+                                <div th:if="${order.addr!=null&&order.phone!=null&&order.name!=null}">
+                                    <div th:if="${order.payState==false}">待付款</div>
+                                    <div th:if="${order.payState==true&&order.sendState==false}">待发货</div>
+                                    <div th:if="${order.payState==true&&order.sendState==true}">已发货</div>
+                                </div>
+                            </a>
+                        </span>
+                    <br>
+                    <div th:if="${!order.sendState==true}">
+                        <span><a href="#" class="update" id="${order.uuid}">修改信息</a></span>
+                    </div>
+                    <div th:if="${order.sendState==false}">
+                                <span><a href="/orderServlet?action=deleteOrder&uuid=${order.uuid}"
+                                         class="delete">取消订单</a></span>
+                    </div>
+                </th>
+            </div>
+        </tr>
+        <tr>
+            <th colspan="2"><span>保险服务</span></th>
+            <th colspan="2"><span>￥0</span></th>
+        </tr>
+    </table>
+</div>
+<div th:replace="footer :: footer_common"></div>
+<script>
+    layui.use(['form', 'layer'], function () {
+        var form = layui.form;
+        var $ = layui.jquery;
+        var layer = layui.layer;
+        var uuid;
+        //表单初始赋值
+        $(".update").click(function () {
+            uuid = $(this).attr("id");
+            layer.open({
+                type: 2,
+                content: 'updateOrder.html', //这里content是一个普通的String
+                title: '修改收货信息',
+                area: '500px',
+                btn: '修改',
+                yes: function () {
+                    var pIframe = $('iframe')[0].contentWindow.document;
+                    var name = $(pIframe).find("#name").val();
+                    var addr = $(pIframe).find("#addr").val();
+                    var phone = $(pIframe).find("#phone").val();
+                    var uuid = $(pIframe).find("#uuid").val();
+                    $.ajax({
+                        url: "orderServlet",
+                        data: {action: 'updateMessage', uuid: uuid, name: name, addr: addr, phone: phone},
+                        success: function (data) {
+                            data = $.parseJSON(data);
+                            if (data.success) {
+                                layer.msg(data.msg);
+                            }
+                            window.location.reload();
+                        }
+                    });
+                    console.log(name, addr, phone, uuid);
+                    layer.closeAll();
+                },
+                success: function (index, layero) {
+                    var pIframe = $('iframe')[0].contentWindow.document;//找到上一级父页面
+                    $.ajax({
+                        url: "orderServlet",
+                        data: {action: 'getMessage', uuid: uuid},
+                        success: function (data) {
+                            data = $.parseJSON(data);
+                            console.log(data);
+                            $(pIframe).find("#name").val(data.name);
+                            $(pIframe).find("#addr").val(data.addr);
+                            $(pIframe).find("#phone").val(data.phone);
+                            $(pIframe).find("#uuid").val(data.uuid);
+                        }
+                    });
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

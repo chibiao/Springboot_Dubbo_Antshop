@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.itlike.mapper.ProductMapper" >
+  <resultMap id="BaseResultMap" type="com.itlike.pojo.Product" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="isHot" property="ishot" jdbcType="BIT" />
+    <result column="marketPrice" property="marketprice" jdbcType="DECIMAL" />
+    <result column="shopPrice" property="shopprice" jdbcType="DECIMAL" />
+    <result column="image" property="image" jdbcType="VARCHAR" />
+    <result column="onlinetime" property="onlinetime" jdbcType="TIMESTAMP" />
+    <result column="state" property="state" jdbcType="BIT" />
+    <result column="description" property="description" jdbcType="LONGVARCHAR" />
+      <association property="secondCategory" javaType="com.itlike.pojo.Secondcategory" columnPrefix="s_">
+          <result column="id" property="id"/>
+          <result column="name" property="name"/>
+      </association>
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from product
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.itlike.pojo.Product" >
+    insert into product (id, name, isHot, scid, 
+      marketPrice, shopPrice, image, 
+      onlinetime, state, description
+      )
+    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{ishot,jdbcType=BIT}, #{secondCategory.id,jdbcType=BIGINT},
+      #{marketprice,jdbcType=DECIMAL}, #{shopprice,jdbcType=DECIMAL}, #{image,jdbcType=VARCHAR}, 
+      #{onlinetime,jdbcType=TIMESTAMP}, #{state,jdbcType=BIT}, #{description,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.itlike.pojo.Product" >
+    update product
+    set name = #{name,jdbcType=VARCHAR},
+      isHot = #{ishot,jdbcType=BIT},
+      scid = #{secondCategory.id,jdbcType=BIGINT},
+      marketPrice = #{marketprice,jdbcType=DECIMAL},
+      shopPrice = #{shopprice,jdbcType=DECIMAL},
+      <if test="image!=null">
+          image = #{image,jdbcType=VARCHAR},
+      </if>
+      onlinetime = #{onlinetime,jdbcType=TIMESTAMP},
+      state = #{state,jdbcType=BIT},
+      description = #{description,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+    <update id="updateProductState">
+        update product
+        set
+        state = false
+        where id = #{id}
+    </update>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select id, name, isHot, scid, marketPrice, shopPrice, image, onlinetime, state, description
+    from product
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    SELECT p.*,s.id as s_id,s.`name` as s_name from product p LEFT JOIN secondcategory s on p.scid=s.id
+      <include refid="where_sql"/>
+  </select>
+    <select id="getHotProduct" resultType="com.itlike.pojo.Product">
+        select * from product where isHot=true
+    </select>
+    <select id="getProductByCategory" resultType="com.itlike.pojo.Product">
+        select * from product where scid in (select id from secondcategory where cid=#{id}) and state=true
+    </select>
+    <select id="selectProductById" resultType="com.itlike.pojo.Product">
+      select * from product where id=#{productId}
+    </select>
+    <!--sql片段-->
+    <sql id="where_sql">
+        <where>
+            <if test="keyword !=null and keyword !=''">
+                and p.name like concat('%',#{keyword},'%')
+            </if>
+        </where>
+    </sql>
+</mapper>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.itlike.mapper.AdminMapper" >
+  <resultMap id="BaseResultMap" type="com.itlike.pojo.Admin" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="anum" property="anum" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from admin
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+    <delete id="deleteAdminAndRoleRel">
+        delete from admin_role_rel where aid=#{id}
+    </delete>
+    <insert id="insert" parameterType="com.itlike.pojo.Admin" useGeneratedKeys="true" keyProperty="id">
+    insert into admin (id, anum, name, 
+      password)
+    values (#{id,jdbcType=BIGINT}, #{anum,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{password,jdbcType=VARCHAR})
+  </insert>
+    <insert id="insertAdminAndRoleRel">
+         insert into admin_role_rel(aid,rid) values (#{id},#{rid})
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="com.itlike.pojo.Admin" >
+    update admin
+    set anum = #{anum,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select id, anum, name, password
+    from admin
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, anum, name, password
+    from admin
+  </select>
+    <select id="getAdminByName" resultType="com.itlike.pojo.Admin">
+        select * from admin where name=#{name}
+    </select>
+    <select id="getRolesById" resultType="java.lang.String">
+      SELECT r.rnum from admin_role_rel as ar
+        LEFT JOIN role as r
+        ON ar.rid = r.rid
+        WHERE aid = #{id}
+    </select>
+    <select id="getPermissionById" resultType="java.lang.String">
+         SELECT DISTINCT p.presource FROM role_permission_rel as rp
+        LEFT JOIN permission as p
+        ON rp.pid=p.pid WHERE rid in(SELECT rid FROM admin_role_rel where aid=#{id})
+    </select>
+</mapper>

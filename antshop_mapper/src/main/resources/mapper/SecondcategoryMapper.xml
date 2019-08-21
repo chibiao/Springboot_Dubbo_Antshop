@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.itlike.mapper.SecondcategoryMapper" >
+  <resultMap id="BaseResultMap" type="com.itlike.pojo.Secondcategory" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+      <association property="parent" column="id" javaType="com.itlike.pojo.Category" columnPrefix="c_">
+          <result property="id" column="id"/>
+          <result property="name" column="name"/>
+      </association>
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from secondcategory
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.itlike.pojo.Secondcategory" >
+    insert into secondcategory (id, name, cid)
+    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{parent.id,jdbcType=BIGINT})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.itlike.pojo.Secondcategory" >
+    update secondcategory
+    set name = #{name,jdbcType=VARCHAR},
+      cid = #{parent.id,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select id, name, cid
+    from secondcategory
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select s.id,s.name,c.id c_id,c.name c_name
+    from secondcategory s LEFT JOIN category c on s.cid=c.id
+  </select>
+</mapper>

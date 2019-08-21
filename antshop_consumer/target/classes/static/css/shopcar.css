@@ -1,0 +1,205 @@
+body{
+	padding: 0;
+	margin: 0;
+}
+#up{
+	width: 100%;
+	height: 100px;
+	background: black;
+	color: white;
+	position: fixed;
+	z-index: 999;
+	top: 0;
+}
+#up #uptext{
+	width: 80%;
+	height: 100%;
+	margin-left: 10%;
+	line-height:100%;
+}
+#up #uptext img{
+	width: 60px;
+	float: left;
+	margin-top: 25px;
+}
+#up #uptext ul,#up #uptext li{
+	list-style: none;
+	
+}
+#up #uptext .title li{
+	float: left;
+	font-size: 20px;
+	display: block;
+	height: 80px;
+	font-weight: 700;
+	width: 60px;
+	margin-left: 20px;
+	line-height: 110px;
+	text-align: center;
+	
+}
+#up #uptext .title li a{
+	color: white;
+	text-decoration:none;
+}
+#up #uptext #searchinput{
+	width: 200px;
+	height: 25px;
+}
+#up #uptext #search{
+	margin-top: 40px;
+	height: 20px;
+	line-height: 30px;
+	float: right;
+}
+#up #uptext #search img{
+	margin-top: 0px;
+	height:23px;
+	width: 23px;
+	border: solid 1px white;
+	cursor: pointer;
+}
+#up #uptext .tips{
+	width:300px;
+	 position: absolute;
+	z-index: 99;
+	margin-left: 915px;
+}
+#up #uptext .tips li{
+	
+	padding: 0;
+	margin-top: -10px;
+	float: right;
+	color: #c8cbcc;
+	font-size: 12px;
+	margin-right: 30px;
+	
+}
+.chosedli{
+	color: #ecece2;
+	border-bottom: 2px solid #ecece2;
+}
+#center{
+	position: absolute;
+	top: 100px;
+	width: 80%;
+	margin-left: 10%;
+	height: 500px;
+	overflow: hidden;
+}
+#center hr{
+	width: 90%;
+	margin-left: 5%;
+	color: lightgray;
+}
+#center .goods {
+	width: 90%;
+	margin-left: 5%;
+	border-bottom: 1px solid lightgray;
+}
+#center .goods img{
+	width: 100px;
+	height: 100px;
+}
+#center .goods #num{
+	width: 25px;
+}
+#center #shop,#center #noshop{
+	float: right;
+	margin-bottom: 10px;
+	margin-right: 5%;
+	background: black;
+	color: white;
+	border: 1px solid black;
+	width: 100px;
+	height: 30px;
+	cursor: pointer;
+}
+#center #allchose{
+	float: left;
+	margin-bottom: 10px;
+	margin-left: 5%;
+	font-size: 18px;
+}
+#center .goods a{
+	color: black;
+	font-size: 15px;
+	text-decoration: none;
+}
+#center .goods a:hover,#center .goods a:active{
+	color: cadetblue;
+	text-decoration: underline;
+}
+#center .goods .do button{
+	background: black;
+	cursor: pointer;
+	width: 50px;
+	border: 1px solid black;
+	color: white;
+	height: 30px;
+}
+
+#center #sum{
+	margin-top: 20px;
+	float: right;
+	font-size: 22px;
+}
+#center #sum button{
+	margin-left: 20px;
+	width: 180px;
+	height: 40px;
+	color: white;
+	background: black;
+	border: 1px solid black;
+	font-size: 15px;
+	cursor: pointer;
+}
+#center #page a{
+	color: black;
+	text-decoration: none;
+}
+#center #page a:hover,#center #page a:active{
+	color: cadetblue;
+	text-decoration: underline;
+}
+#buttom{
+	width: 100%;
+	position: absolute;
+	top: 670px;
+}
+
+#buttom #btop{
+	background: black;
+	height: 100px;
+	width: 100%;
+}
+#buttom #btop img{
+	width: 80%;
+	margin-top: 30px;
+	margin-left: 120px;
+	
+}
+#buttom #bbut{
+	height: 100px;
+	width: 100%;
+
+}
+#buttom #tab{
+	width: 80%;
+	height: 300px;
+	margin-top: 10px;
+	margin-left: 250px;
+	table-layout:fixed
+}
+#buttom #tab a{
+	color: black;
+	text-decoration:none;
+	
+}
+#buttom #butt{
+	background: black;
+}
+#buttom #butt img{
+	width: 80%;
+	margin-left: 70px;
+}

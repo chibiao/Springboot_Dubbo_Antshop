@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>码蚁商城</title>
+    <!--链接外部样式-->
+    <!--设置标签图标-->
+    <link href="favicon.ico" rel="shortcut icon">
+    <link rel="stylesheet" th:href="@{/style/index.css}" href="style/index.css">
+    <link rel="stylesheet" th:href="@{/style/headerStyle.css}" href="style/headerStyle.css">
+    <link rel="stylesheet" th:href="@{/style/pageStyle.css}" href="style/pageStyle.css">
+    <link rel="stylesheet" th:href="@{/style/footerStyle.css}" href="style/footerStyle.css">
+    <script th:src="@{/js/jquery-1.11.0.js}" src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+    <script th:src="@{/js/header.js}" src="js/header.js"></script>
+</head>
+<body>
+<div th:replace="header :: head_common"></div>
+<!--热买商品-->
+<div id="hot_goods">
+    <h3 class="hot_goods_title">热卖商品</h3>
+    <div class="hot_goods_body">
+        <input type="hidden" id="id" th:value="${id}">
+        <ul>
+            <div th:if="${pageBean.products.isEmpty()}">
+                没有商品
+            </div>
+            <li th:each="product : ${pageBean.products}">
+                <a th:href="@{/product/getProductdetail}+'?id='+${product.id}">
+                    <img th:src="@{/upload/image/}+${product.image}" src="/upload/image/${product.image }" alt="">
+                    <p th:text="${product.name}">没有商品</p>
+                    <del th:text="'￥'+${product.marketprice}"></del>
+                    <br>
+                    <i class="yuan">￥</i>
+                    <span class="price" th:text="${product.shopprice}"></span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <!--分页-->
+    <div id="page" class="page_div"></div>
+</div>
+<div th:replace="footer :: footer_common"></div>
+<script type="text/javascript" th:src="@{/js/paging.js}" src="js/paging.js"></script>
+<script th:inline="javascript">
+    //分页
+    $("#page").paging({
+        pageNo:[[${pageBean.pageNo}]],
+        totalPage:[[${pageBean.totalPage}]],
+        totalSize: [[${pageBean.totalSize}]],
+        callback: function (num) {
+            var id = $("#id").val();
+            if(id){
+                $(window).attr('location', "/product/getProductByCategory?pageNo=" + num + "&id=" + id);
+            }
+        }
+    });
+</script>
+</body>
+</html>
+
+

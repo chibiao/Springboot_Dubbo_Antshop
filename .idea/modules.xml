@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/antsho_utils/antsho_utils.iml" filepath="$PROJECT_DIR$/antsho_utils/antsho_utils.iml" />
+      <module fileurl="file://$PROJECT_DIR$/antshop_consumer/antshop_consumer.iml" filepath="$PROJECT_DIR$/antshop_consumer/antshop_consumer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/antshop_interface/antshop_interface.iml" filepath="$PROJECT_DIR$/antshop_interface/antshop_interface.iml" />
+      <module fileurl="file://$PROJECT_DIR$/antshop_mapper/antshop_mapper.iml" filepath="$PROJECT_DIR$/antshop_mapper/antshop_mapper.iml" />
+      <module fileurl="file://$PROJECT_DIR$/antshop_parent/antshop_parent.iml" filepath="$PROJECT_DIR$/antshop_parent/antshop_parent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/antshop_pojo/antshop_pojo.iml" filepath="$PROJECT_DIR$/antshop_pojo/antshop_pojo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/antshop_provider/antshop_provider.iml" filepath="$PROJECT_DIR$/antshop_provider/antshop_provider.iml" />
+    </modules>
+  </component>
+</project>

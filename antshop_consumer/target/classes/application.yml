@@ -1,0 +1,31 @@
+spring:
+  mvc:
+    date-format: yyyy-MM-dd
+  dubbo:
+    application:
+      name: antshop_consumer
+    registry:
+      address: zookeeper://192.168.2.128
+      port: 2181
+    scan:
+      base-packages: com.itlike.controller #扫描的包名
+    consumer:
+      check: false
+  thymeleaf:
+    mode: HTML5
+    cache: false
+    encoding: UTF-8
+  servlet:
+    multipart:
+      max-file-size: 30MB
+      max-request-size: 30MB
+  aop:
+    proxy-target-class: true
+server:
+  port: 8089
+  servlet:
+    context-path: /
+fastdfs-ip: http://192.168.2.128/
+logging:
+  level:
+    com.itlike: debug
